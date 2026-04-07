@@ -42,6 +42,11 @@
                     <h3>النمط الثالث: توصيل الصور</h3>
                     <p>المطابقة بين 5 صور و 5 أسماء (7 نماذج)</p>
                 </button>
+                <button class="mode-btn main-btn" onclick="startQuiz('mode4')">
+                    <i class="fa-solid fa-image"></i>
+                    <h3>النمط الرابع: أوجد الصورة</h3>
+                    <p>أوجد الصورة المطابقة للاسم الطبي (عكسي)</p>
+                </button>
             </div>
         </main>
 
@@ -114,6 +119,16 @@
             <!-- Pairs -->
         </div>
         <button id="submit-match-btn" class="main-btn action-btn" style="margin-top: 20px; width: 100%;" onclick="checkMode3()">تحقق <i class="fa-solid fa-check-circle"></i></button>
+    </template>
+
+    <!-- Mode 4 -->
+    <template id="mode4-template">
+        <div class="statement-box" style="margin-bottom: 20px;">
+            أوجد الصورة الخاصة بـ: <br><span class="mode4-title" style="color: var(--secondary); font-size: 1.6rem; font-weight: 800; display: inline-block; margin-top: 10px;"></span>
+        </div>
+        <div class="mode4-grid">
+            <!-- 4 images will go here -->
+        </div>
     </template>
 
     <script src="script.js"></script>

@@ -107,6 +107,19 @@ function generateQuestions(mode) {
             questions.push({ items: roundItems, options: roundOptions });
         }
     }
+    else if (mode === 'mode4') {
+        // Mode 4: Reverse Mode (Text -> 4 Images)
+        questions = shuffledDb.map(item => {
+            let options = [item];
+            while (options.length < 4) {
+                let randomItem = db[Math.floor(Math.random() * db.length)];
+                if (!options.some(opt => opt.id === randomItem.id)) {
+                    options.push(randomItem);
+                }
+            }
+            return { item, options: shuffleArray(options) };
+        });
+    }
 }
 
 // Render Request
@@ -187,6 +200,26 @@ function loadQuestion() {
             matchItem.appendChild(select);
             matchGrid.appendChild(matchItem);
         });
+        questionContainer.appendChild(template);
+    }
+    else if (currentMode === 'mode4') {
+        let template = document.getElementById('mode4-template').content.cloneNode(true);
+        template.querySelector('.mode4-title').textContent = q.item.name;
+        
+        let grid = template.querySelector('.mode4-grid');
+        q.options.forEach(optItem => {
+            let btn = document.createElement('button');
+            btn.className = 'mode4-img-btn';
+            
+            let img = document.createElement('img');
+            img.src = optItem.src;
+            img.onerror = function() { this.src = "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25' viewBox='0 0 200 200'%3E%3Crect fill='%23f1f5f9' width='200' height='200'/%3E%3Ctext fill='%2394a3b8' x='50%25' y='50%25' font-family='sans-serif' font-size='14' text-anchor='middle' dominant-baseline='middle'%3Eمفقودة%3C/text%3E%3C/svg%3E"; };
+            
+            btn.appendChild(img);
+            btn.onclick = () => checkMode4(btn, optItem, q.item);
+            grid.appendChild(btn);
+        });
+        
         questionContainer.appendChild(template);
     }
     
@@ -278,6 +311,37 @@ function checkMode3() {
     if (allCorrect) {
         setTimeout(() => goNext(), 1500); // Auto-advance for matching too
     } else {
+        controlsContainer.classList.remove('hidden');
+        nextBtn.onclick = () => goNext();
+    }
+}
+
+// Mode 4 Checker
+function checkMode4(btn, selectedItem, correctItem) {
+    let btns = document.querySelectorAll('.mode4-img-btn');
+    btns.forEach(b => b.disabled = true);
+    
+    if (selectedItem.id === correctItem.id) {
+        btn.classList.add('correct');
+        score += 1;
+        setTimeout(() => goNext(), 800);
+    } else {
+        btn.classList.add('wrong');
+        
+        // Highlight correct image
+        let currentQ = questions[currentQuestionIndex];
+        btns.forEach((b, idx) => {
+             if (currentQ.options[idx].id === correctItem.id) {
+                 b.classList.add('correct');
+             }
+        });
+        
+        mistakes.push({
+            img: correctItem.src,
+            correct: `هذه هي الصورة الصحيحة لـ ${correctItem.name}`,
+            wrong: `الصورة التي اخترتها خاطئة`
+        });
+        
         controlsContainer.classList.remove('hidden');
         nextBtn.onclick = () => goNext();
     }
