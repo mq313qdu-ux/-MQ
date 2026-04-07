@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة QDU للاختبار التفاعلي</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="logo">
+                <i class="fa-solid fa-graduation-cap"></i>
+                <h1>منصة QDU للاختبار التفاعلي</h1>
+            </div>
+            <p class="subtitle">إعداد الطالب مقتدى الكناني | التصوير العملي</p>
+        </header>
+
+        <!-- Main Menu -->
+        <main id="main-menu" class="screen active">
+            <h2>اختر نمط الاختبار</h2>
+            <div class="modes-grid">
+                <button class="mode-btn main-btn" onclick="startQuiz('mode1')">
+                    <i class="fa-solid fa-list-ul"></i>
+                    <h3>النمط الأول: خيارات متعددة</h3>
+                    <p>صورة و 4 خيارات، أحدهم صحيح</p>
+                </button>
+                <button class="mode-btn main-btn" onclick="startQuiz('mode2')">
+                    <i class="fa-solid fa-check-double"></i>
+                    <h3>النمط الثاني: صح أم خطأ</h3>
+                    <p>صورة وإسم، حدد هل الاسم مطابق للصورة أم لا</p>
+                </button>
+                <button class="mode-btn main-btn" onclick="startQuiz('mode3')">
+                    <i class="fa-solid fa-link"></i>
+                    <h3>النمط الثالث: توصيل الصور</h3>
+                    <p>المطابقة بين 5 صور و 5 أسماء (7 نماذج)</p>
+                </button>
+            </div>
+        </main>
+
+        <!-- Quiz Screen -->
+        <main id="quiz-screen" class="screen">
+            <div class="quiz-header">
+                <button class="icon-btn back-btn" onclick="returnToMenu()"><i class="fa-solid fa-arrow-right"></i> رجوع</button>
+                <div class="progress-container">
+                    <div class="progress-text"><span id="current-q">1</span> / <span id="total-q">35</span></div>
+                    <div class="progress-bar"><div id="progress-fill"></div></div>
+                </div>
+                <div class="score-display">النقاط: <span id="score-val">0</span></div>
+            </div>
+
+            <div id="question-container" class="question-container">
+                <!-- Dynamic Content Goes Here -->
+            </div>
+
+            <div id="controls-container" class="controls-container hidden">
+                <button id="next-btn" class="main-btn action-btn">التالي <i class="fa-solid fa-arrow-left"></i></button>
+            </div>
+        </main>
+
+        <!-- Results Screen -->
+        <main id="results-screen" class="screen">
+            <div class="results-header">
+                <i class="fa-solid fa-trophy result-icon"></i>
+                <h2>اكتمل الاختبار!</h2>
+                <div class="final-score">نتيجتك: <span id="final-score-val">0</span> / <span id="final-total">35</span></div>
+            </div>
+            
+            <div id="mistakes-container" class="mistakes-container">
+                <h3><i class="fa-solid fa-circle-exclamation"></i> أبرز الأخطاء</h3>
+                <div id="mistakes-list" class="mistakes-list">
+                    <!-- Mistakes populate here -->
+                </div>
+            </div>
+
+            <button class="main-btn action-btn home-btn" style="margin-top:15px; width:100%" onclick="returnToMenu()"><i class="fa-solid fa-house"></i> العودة للقائمة الرئيسية</button>
+        </main>
+    </div>
+
+    <!-- Mode Templates -->
+    <!-- Mode 1 -->
+    <template id="mode1-template">
+        <div class="image-wrapper">
+            <img class="question-img" src="" alt="Question Image" />
+        </div>
+        <div class="options-grid" id="options-holder"></div>
+    </template>
+
+    <!-- Mode 2 -->
+    <template id="mode2-template">
+        <div class="image-wrapper">
+            <img class="question-img" src="" alt="Question Image" />
+        </div>
+        <div class="statement-box">
+            <p class="statement-text" id="statement-text"></p>
+        </div>
+        <div class="tf-options">
+            <button class="tf-btn true-btn" onclick="checkMode2(true)"><i class="fa-solid fa-check"></i> صح</button>
+            <button class="tf-btn false-btn" onclick="checkMode2(false)"><i class="fa-solid fa-xmark"></i> خطأ</button>
+        </div>
+    </template>
+
+    <!-- Mode 3 -->
+    <template id="mode3-template">
+        <p class="mode3-instruction">طابق بين الصور في الأعلى والأسماء في القوائم المنسدلة أسفلها</p>
+        <div class="match-grid" id="match-grid">
+            <!-- Pairs -->
+        </div>
+        <button id="submit-match-btn" class="main-btn action-btn" style="margin-top: 20px; width: 100%;" onclick="checkMode3()">تحقق <i class="fa-solid fa-check-circle"></i></button>
+    </template>
+
+    <script src="script.js"></script>
+</body>
+</html>
